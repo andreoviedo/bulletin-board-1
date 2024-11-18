@@ -24,13 +24,22 @@
       </div>
 
       <button>
-        Create board
+        Add board
       </button>
     </form>
   </div>
 </div>
 
 <hr>
+
+<ul>
+  <% @list_of_boards.each do |a_board| %>
+    <li>
+      <a href = "/boards/<%= a_board.id %>"><%=a_board.name %></a>
+    </li>
+  <% end %>
+</ul>
+
 <div>
   <div>
     <table border="1">

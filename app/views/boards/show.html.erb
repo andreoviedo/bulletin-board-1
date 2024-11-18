@@ -1,71 +1,59 @@
 <div>
   <div>
     <h1>
-      Board #<%= @the_board.id %> details
+      <%= @the_board.name %>
     </h1>
 
-    <div>
+    <hr>
+
+    <h2>Add a new post</h2>
+
+    <form action="/insert_post" method="post">
       <div>
-        <a href="/boards">
-          Go back
-        </a>
+      <label for="title_field">Title</label>
+      <input id="title_field" type="text" name="title">
+      </div>
+
+
+      <div>
+      <label for="body_field">Body</label>
+      <textarea name="body" id="body_field" cols="30" rows="10"></textarea>
       </div>
 
       <div>
-        <a href="/delete_board/<%= @the_board.id %>">
-          Delete board
-        </a>
+      <label for="expires_on_field">Expires on</label>
+      <input type="date" name="expires_on" id="expires_on_field">
       </div>
-    </div>
 
-    <dl>
-      <dt>
-        Name
-      </dt>
-      <dd>
-        <%= @the_board.name %>
-      </dd>
-
-      <dt>
-        Created at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_board.created_at) %> ago
-      </dd>
-
-      <dt>
-        Updated at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_board.updated_at) %> ago
-      </dd>
-    </dl>
-  </div>
-</div>
-
-<hr>
-
-
-<div>
-  <div>
-    <h2>
-      Edit board
-    </h2>
-
-    <form action="/modify_board/<%= @the_board.id %>"  method="post" >
       <div>
-        <label for="name_box">
-          Name
-        </label>
-
-        <input type="text" id="name_box" name="query_name" value="<%= @the_board.name %>">
+      <label for="board_id_field">Board ID</label>
+      <input type="hidden" id="board_id_field" name="board_id" value ="<%= @the_board.id %>">
       </div>
-
+      
       <button>
-        Update board
+        Add post
       </button>
-    </form>
-  </div>
-</div>
 
-<hr>
+  </form>
+
+
+<h2>Active posts</h2>
+
+<% matching_posts = Post.where({:board_id => @the_board.id}).order({:expires_on => :asc})%>
+
+<table border = "1">
+  <tr>
+    <th>Title</th>
+    <th>Body</th>
+    <th>Posted on</th>
+    <th>Expires on</th>
+  </tr>
+
+<% matching_posts.each do |a_post|%>
+  <tr>
+    <td><%= a_post.title%></td>
+    <td><%= a_post.body%></td>
+    <td><%= a_post.created_at.strftime("%b %e, %Y")%> on</td>
+    <td><%= a_post.expires_on.strftime("%b %e, %Y")%> on</td>
+  </tr>
+</table>
