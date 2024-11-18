@@ -11,4 +11,5 @@
 #  board_id   :integer
 #
 class Post < ApplicationRecord
+  belongs_to(:board)
 end
